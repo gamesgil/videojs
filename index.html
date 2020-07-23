@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="video-js.min.css" rel="stylesheet"/>
+    <link href="styles.css" rel="stylesheet"/>
 </head>
 <body>
     <video
-    
     id="my-video"
     class="video-js"
     preload="auto"
@@ -16,11 +16,14 @@
     height="264"
     data-setup="{}"
   >
-    <source src="./assets/Pent_Full_360_injected.mp4#t=0.1" type="video/mp4" />
-     
+    <source src="./assets/video.mp4#t=0.1" type="video/mp4" />
   </video>
-  <button id="btnBack"><<</button>
-  <button id="btnForward">>></button>
+  <button id="btnBack">↓</button>
+  <button id="btnForward">↑</button>
+  <button id="btnRotateLeft">↻</button>
+  <button id="btnRotateRight">↺</button>
+
+  <button id="btnFullscreen">▣</button>
 
     <script src="./src/video.min.js"></script>
     <script src="./src/videojs-vr.min.js"></script>

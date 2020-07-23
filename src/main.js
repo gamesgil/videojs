@@ -12,8 +12,11 @@ let direction = 0
 let rotation = 0
 
 const advanceFrame = () => {
-    if (direction) {
-      player.currentTime(player.currentTime() + direction * 0.05)
+    const isRotated = Math.abs(Math.abs(vr.camera.rotation.x) - Math.PI) < 0.1
+    const actualDirection = isRotated ? -direction : direction
+
+    if (actualDirection) {
+      player.currentTime(player.currentTime() + actualDirection * 0.05)
     }
 
     if (rotation) {
