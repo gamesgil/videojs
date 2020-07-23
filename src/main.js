@@ -1,59 +1,61 @@
 const player = videojs('my-video');
+
 const btnForward = document.querySelector('#btnForward')
 const btnBack = document.querySelector('#btnBack')
+const btnRotateRight = document.querySelector('#btnRotateRight')
+const btnRotateLeft = document.querySelector('#btnRotateLeft')
+const btnFullscreen= document.querySelector('#btnFullscreen')
 
 const vr = player.vr({projection: '360'});
-console.log({vr})
-player.pause();
 
-let state = false;
-let direction = 1;
+let direction = 0
+let rotation = 0
 
 const advanceFrame = () => {
-    if (state) {
+    if (direction) {
       player.currentTime(player.currentTime() + direction * 0.05)
-    } else {
-        //console.log(vr.camera.position)
+    }
+
+    if (rotation) {
+        vr.camera.translateX(rotation)
     }
 }
 
-btnForward.addEventListener("mousedown", () => {
-    state = true
+btnForward.addEventListener("touchstart", () => {
     direction = 1
 })
 
-btnForward.addEventListener("mouseup", () => state = false)
+btnForward.addEventListener("mousedown", () => {
+    direction = 1
+})
 
-btnBack.addEventListener("mousedown", () => {
-    state = true
+btnBack.addEventListener("touchstart", () => {
     direction = -1
 })
 
-btnBack.addEventListener("mouseup", () => state = false)
-
-document.addEventListener('keydown', key => {
-    console.log(vr.camera.position)
-    vr.camera.lookAt(400, 400, 400)
-    switch (key.key) {
-        case "ArrowRight":
-            vr.camera.position.x -= 0.1;
-            vr.camera.position.z -= 0.1;
-            break;
-
-        case "ArrowLeft":
-            vr.camera.position.x += 0.1;
-            vr.camera.position.z -= 0.1;
-            break;
-
-        case "ArrowUp":
-            vr.camera.position.y++;
-            break;
-
-        case "ArrowDown":
-            vr.camera.position.y--;
-            break;
-            
-    }
+btnBack.addEventListener("mousedown", () => {
+    direction = -1
 })
+
+btnRotateLeft.addEventListener('touchstart', () => rotation = 1)
+btnRotateLeft.addEventListener('mousedown', () => rotation = 1)
+btnRotateRight.addEventListener('touchstart', () => rotation = -1)
+btnRotateRight.addEventListener('mousedown', () => rotation = -1)
+
+btnFullscreen.addEventListener('click', () => {
+    player.requestFullscreen()
+})
+
+document.addEventListener('touchend', () => {
+    direction = 0
+    rotation = 0
+})
+
+document.addEventListener('mouseup', () => {
+    direction = 0
+    rotation = 0
+})
+
+player.pause();
 
 setInterval(() => advanceFrame(), 1000 / 10)
