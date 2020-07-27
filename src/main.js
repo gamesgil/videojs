@@ -6,22 +6,27 @@ const btnRotateRight = document.querySelector('#btnRotateRight')
 const btnRotateLeft = document.querySelector('#btnRotateLeft')
 const btnFullscreen= document.querySelector('#btnFullscreen')
 const btnFov= document.querySelector('#btnFov')
-
+const log = document.querySelector('#textArea')
 let vr
 
 let direction = 0
-let rotation = 0
+let rotationDirection = 0
 
 const advanceFrame = () => {
-    const isRotated = Math.abs(Math.abs(vr.camera.rotation.x) - Math.PI) < 0.1
+    if (!vr.camera) {
+    return
+}
+    const isRotated = vr.camera.position.z < 0
     const actualDirection = isRotated ? -direction : direction
 
     if (actualDirection) {
       player.currentTime(player.currentTime() + actualDirection * 0.05)
     }
 
-    if (rotation) {
-        vr.camera.translateX(rotation)
+    if (rotationDirection) {
+        console.log(vr.camera.position)
+        vr.camera.translateX(rotationDirection)
+        log.textContent = `${vr.camera.position.x.toFixed(3)}, ${vr.camera.position.z.toFixed(3)}` 
     }
 }
 
@@ -46,10 +51,10 @@ player.ready(() => {
         direction = -1
     })
     
-    btnRotateLeft.addEventListener('touchstart', () => rotation = 1)
-    btnRotateLeft.addEventListener('mousedown', () => rotation = 1)
-    btnRotateRight.addEventListener('touchstart', () => rotation = -1)
-    btnRotateRight.addEventListener('mousedown', () => rotation = -1)
+    btnRotateLeft.addEventListener('touchstart', () => rotationDirection = 1)
+    btnRotateLeft.addEventListener('mousedown', () => rotationDirection = 1)
+    btnRotateRight.addEventListener('touchstart', () => rotationDirection = -1)
+    btnRotateRight.addEventListener('mousedown', () => rotationDirection = -1)
     
     btnFullscreen.addEventListener('click', () => {
         player.requestFullscreen()
@@ -67,12 +72,12 @@ player.ready(() => {
     
     document.addEventListener('touchend', () => {
         direction = 0
-        rotation = 0
+        rotationDirection = 0
     })
     
     document.addEventListener('mouseup', () => {
         direction = 0
-        rotation = 0
+        rotationDirection = 0
     })
 
     setInterval(() => advanceFrame(), 1000 / 10)
