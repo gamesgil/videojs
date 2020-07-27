@@ -6,7 +6,7 @@ const btnRotateRight = document.querySelector('#btnRotateRight')
 const btnRotateLeft = document.querySelector('#btnRotateLeft')
 const btnFullscreen= document.querySelector('#btnFullscreen')
 const btnFov= document.querySelector('#btnFov')
-const log = document.querySelector('#textArea')
+//const log = document.querySelector('#textArea')
 let vr
 
 let direction = 0
@@ -24,9 +24,7 @@ const advanceFrame = () => {
     }
 
     if (rotationDirection) {
-        console.log(vr.camera.position)
         vr.camera.translateX(rotationDirection)
-        log.textContent = `${vr.camera.position.x.toFixed(3)}, ${vr.camera.position.z.toFixed(3)}` 
     }
 }
 
